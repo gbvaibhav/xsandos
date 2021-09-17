@@ -3,6 +3,7 @@ sap.ui.define([
 ], function(Controller) {
 	"use strict";
 
+
 	return Controller.extend("com.gb.gamexsandos.controller.GameLanding", {
 
 		/**
