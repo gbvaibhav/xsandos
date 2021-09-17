@@ -1,0 +1,32 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.gb.gamexsandos.controller.GameLanding"
+	xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Game Page">
+		<headerContent>
+			<Button icon="sap-icon://sys-cancel" press="onClearGame"/>
+		</headerContent>
+		<content>
+			<l:Grid class="sapUiSmallMarginTop" hSpacing="2" defaultSpan="L4 M4 S4" >
+				<l:content>
+					<Button text="{gameLocalModel>/1x1}" width="100%" enabled="{= !${gameLocalModel>/1x1}}" press="onAddValue">
+					</Button>
+					<Button text="{gameLocalModel>/1x2}" width="100%" enabled="{= !${gameLocalModel>/1x2}}" press="onAddValue">
+					</Button>
+					<Button text="{gameLocalModel>/1x3}" width="100%" enabled="{= !${gameLocalModel>/1x3}}" press="onAddValue">
+					</Button>
+					<Button text="{gameLocalModel>/2x1}" width="100%" enabled="{= !${gameLocalModel>/2x1}}" press="onAddValue">
+					</Button>
+					<Button text="{gameLocalModel>/2x2}" width="100%" enabled="{= !${gameLocalModel>/2x2}}" press="onAddValue">
+					</Button>
+					<Button text="{gameLocalModel>/2x3}" width="100%" enabled="{= !${gameLocalModel>/2x3}}" press="onAddValue">
+					</Button>
+					<Button text="{gameLocalModel>/3x1}" width="100%" enabled="{= !${gameLocalModel>/3x1}}" press="onAddValue">
+					</Button>
+					<Button text="{gameLocalModel>/3x2}" width="100%" enabled="{= !${gameLocalModel>/3x2}}" press="onAddValue">
+					</Button>
+					<Button text="{gameLocalModel>/3x3}" width="100%" enabled="{= !${gameLocalModel>/3x3}}" press="onAddValue">
+					</Button>
+				</l:content>
+			</l:Grid>
+		</content>
+	</Page>
+</mvc:View>
