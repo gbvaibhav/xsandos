@@ -1,8 +1,7 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller"
-], function(Controller) {
+], function (Controller) {
 	"use strict";
-
 
 	return Controller.extend("com.gb.gamexsandos.controller.GameLanding", {
 
@@ -11,7 +10,7 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf com.gb.gamexsandos.view.GameLanding
 		 */
-		onInit: function() {
+		onInit: function () {
 			this.getOwnerComponent().getRouter().getRoute("gameLanding").attachPatternMatched(this._gamelandingPageRouteMatchedMethod, this);
 		},
 
@@ -40,55 +39,73 @@ sap.ui.define([
 		//	onExit: function() {
 		//
 		//	}
-		_gamelandingPageRouteMatchedMethod: function() {
+		_gamelandingPageRouteMatchedMethod: function () {
 			this.getView().setModel(new sap.ui.model.json.JSONModel({}), "gameLocalModel");
+			this.combArray = this.makeCombinationArray();
 			this.currentValue = "X";
 		},
-		_getPropFromModel: function(modelName, prop) {
+		_getPropFromModel: function (modelName, prop) {
 			return this.getView().getModel(modelName).getProperty(prop);
 		},
-		onClearGame: function() {
+		onClearGame: function () {
 			this._gamelandingPageRouteMatchedMethod();
 		},
-		onAddValue: function(oEvent) {
+		onAddValue: function (oEvent) {
 			var path = oEvent.getSource().getBindingInfo("text").parts[0].path;
 			this.getView().getModel("gameLocalModel").setProperty(path, this.currentValue);
 			this.currentValue = this.currentValue === 'X' ? 'O' : 'X';
 			this.checkWinner();
 		},
-		makeCombinationArray: function(){
-		var noOfRows = 3;
-		var noOfColumns = 3;
-		var combArray = [];
-		
-		var rNumbers = [];
-		var cNumbers = [];
-		for(let r = 1; r<= noOfRows ; r++){
-			rNumbers.push(r);
-		}
-		for(let c = 1; c<= noOfColumns ; c++){
-			rNumbers.push(c);
-		}
-		
-		// depending on rows 
-		
-		
-		// depending on columns 
-		
-		
-		
-		// diag
+		makeCombinationArray: function () {
+			var noOfRows = 3;
+			var noOfColumns = 3;
+			var combArray = [];
+
+			var rNumbers = [];
+			var cNumbers = [];
+			for (let r = 1; r <= noOfRows; r++) {
+				rNumbers.push(r);
+			}
+			for (let c = 1; c <= noOfColumns; c++) {
+				cNumbers.push(c);
+			}
+
+			// depending on rows 
+			rNumbers.forEach((rowNum) => {
+				var arrToPush = [];
+				cNumbers.forEach((cNumb) => {
+					arrToPush.push(rowNum + "x" + cNumb);
+				});
+				combArray.push(arrToPush);
+			});
+
+			// depending on columns 
+			cNumbers.forEach((cNumb) => {
+				var arrToPush = [];
+				rNumbers.forEach((rowNum) => {
+					arrToPush.push(rowNum + "x" + cNumb);
+				});
+				combArray.push(arrToPush);
+			});
+			// diag
+			if (noOfRows === noOfColumns) {
+				var arrToPushDia_one = [];
+				for (let ix = 1; ix <= noOfRows && ix <= noOfColumns; ix++) {
+					arrToPushDia_one.push(ix + "x" + ix);
+				}
+				combArray.push(arrToPushDia_one);
+				var arrToPushDia_two = [];
+				for (let ix = 1, iy = noOfColumns; ix <= noOfRows && iy >= 1; ix++, iy--) {
+					arrToPushDia_two.push(ix + "x" + iy);
+				}
+				combArray.push(arrToPushDia_two);
+			}
+			return {combArray : combArray , rNumbers: rNumbers, cNumbers: cNumbers};
 		},
-		checkWinner: function() {
-			var combinationOfWins = [
-				["1x1", "1x2", "1x3"],
-				["1x1", "2x2", "3x3"],
-				["2x1", "2x2", "2x3"],
-				["3x1", "3x2", "3x3"],
-				["3x1", "2x2", "1x3"]
-			];
+		checkWinner: function () {
+			var combinationOfWins = this.combArray;
 			var winner = false;
-			jQuery.each(combinationOfWins, (ix, obj) => {
+			jQuery.each(combinationOfWins.combArray, (ix, obj) => {
 				if (!winner) {
 					winner = this._getPropFromModel("gameLocalModel", "/" + obj[0]) && this._getPropFromModel("gameLocalModel", "/" + obj[1]) &&
 						this._getPropFromModel("gameLocalModel", "/" + obj[2]) && this._getPropFromModel("gameLocalModel", "/" + obj[0]) === this._getPropFromModel(
